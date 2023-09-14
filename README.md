@@ -1,5 +1,7 @@
 # huion-freebsd
-A system service to make the Huion H420 graphical tablet functional on FreeBSD.
+A system service to make the Huion graphical tablets functional on FreeBSD.
+Currently tested on H420 and H950P.
+
 May work with other Huion devices, let me know if it does.
 
 # How To Use
@@ -43,11 +45,11 @@ This service adds a USB quirk that prevents FreeBSD from creating
 the broken /dev/ums device.
 
 Since the quirk is added via vendor ID, it is possible that
-this would work for other Huion devices.
+this would work for most Huion devices. 
 
 # License
 
-Copyright 2021 Sergei Akhmatdinov
+Copyright 2023 Sergei Akhmatdinov
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
