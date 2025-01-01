@@ -1,6 +1,6 @@
 # huion-freebsd
 A system service to make the Huion graphical tablets functional on FreeBSD.
-Currently tested on H420 and H950P.
+Currently tested on H420 and H950P. Confirmed to work with H952 by [@tingox](https://github.com/tingox).
 
 May work with other Huion devices, let me know if it does.
 
