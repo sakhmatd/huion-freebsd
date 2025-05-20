@@ -1,7 +1,11 @@
 # huion-freebsd
 A system service to make the Huion graphical tablets functional on FreeBSD.
-Currently tested on H420 and H950P. Confirmed to work with H952 by [@tingox](https://github.com/tingox),
-with Kamvas 20 by [@sterentev](https://github.com/sterentev).
+
+Confirmed to work with:
+* H420
+* H950P
+* H952 (thanks to [@tingox](https://github.com/tingox))
+* Kamvas 20 (thanks to [@sterentev](https://github.com/sterentev))
 
 May work with other Huion devices, let me know if it does.
 
@@ -29,8 +33,8 @@ Then, either reboot, or start the service with
 # How It Works
 
 FreeBSD and moused in particular detect the tablet as a USB mouse by
-default, creating a /dev/ums device. Since the tablet is not a USB
-mouse, however, this does not work and it prevents webcamd from
+default, creating a /dev/ums device. However, since the tablet is not a USB
+mouse, this does not work and it prevents webcamd from
 attaching to the tablet properly.
 
 This service adds a USB quirk that prevents FreeBSD from creating
