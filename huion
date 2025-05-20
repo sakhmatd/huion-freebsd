@@ -1,3 +1,5 @@
+#!/bin/sh
+
 #########################################################################
 # Copyright 2023 Sergei Akhmatdinov
 #
@@ -14,8 +16,6 @@
 # limitations under the License.
 #########################################################################
 
-#!/bin/sh
-
 # PROVIDE: huion
 # REQUIRE: LOGIN
 # KEYWORD: shutdown
@@ -28,14 +28,35 @@ rcvar="huion_enable"
 load_rc_config "$name"
 
 : ${huion_enable:="NO"}
+: ${huion_webcamd:="/usr/local/sbin/webcamd"}
 
 start_precmd="huion_prepare"
 start_cmd="huion_start"
 stop_cmd="huion_stop"
+status_cmd="huion_status"
+
+required_modules="cuse"
+required_files="${huion_webcamd}"
+
 
 huion_prepare()
 {
 	kldload -n usb_quirk
+}
+
+huion_device()
+{
+	usbconfig | grep "vendor 0x256c" | head -n 1 | awk -F: '{print $1}'
+}
+
+huion_webcamd_cmd()
+{
+	echo "${huion_webcamd} -B -d $(huion_device)"
+}
+
+huion_pid()
+{
+	ps ax | grep "$(huion_webcamd_cmd)" | awk '{print $1}'
 }
 
 huion_start()
@@ -43,12 +64,37 @@ huion_start()
 	# Prevent moused(8) from picking up a bogus /dev/umsN
 	usbconfig add_dev_quirk_vplh 0x256c 0 0 0xffff UQ_MATCH_VENDOR_ONLY
 	usbconfig add_dev_quirk_vplh 0x256c 0 0 0xffff UQ_UMS_IGNORE
+
+	if [ "$(huion_device)" ]; then
+		$(huion_webcamd_cmd)
+	else
+		echo "No Huion tablet USB device found."
+		return 1
+	fi
 }
 
 huion_stop()
 {
+	local pid=$(huion_pid)
+	if [ "${pid}" ]; then
+		echo "Stopping huion tablet."
+		echo "Waiting for PID: ${pid}"
+		kill ${pid}
+		sleep 1
+	fi
+
 	usbconfig remove_dev_quirk_vplh 0x256c 0 0 0xffff UQ_MATCH_VENDOR_ONLY
 	usbconfig remove_dev_quirk_vplh 0x256c 0 0 0xffff UQ_UMS_IGNORE
+}
+
+huion_status()
+{
+	local pid=$(huion_pid)
+	if [ "${pid}" ]; then
+		echo "Huion webcamd is running with PID ${pid}"
+	else
+		echo "Huion webcamd is not running"
+	fi
 }
 
 run_rc_command "$1"

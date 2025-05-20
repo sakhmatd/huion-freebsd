@@ -1,10 +1,13 @@
 # huion-freebsd
 A system service to make the Huion graphical tablets functional on FreeBSD.
-Currently tested on H420 and H950P. Confirmed to work with H952 by [@tingox](https://github.com/tingox).
+Currently tested on H420 and H950P. Confirmed to work with H952 by [@tingox](https://github.com/tingox),
+with Kamvas 20 by [@sterentev](https://github.com/sterentev).
 
 May work with other Huion devices, let me know if it does.
 
 # How To Use
+
+Make sure CUSE and Webcamd are enabled in your system.
 
 To use the service, copy it to the service folder:
 
@@ -22,17 +25,6 @@ Then, either reboot, or start the service with
 ```
 # service huion start
 ```
-
-Make sure CUSE and Webcamd are enabled in your system.
-
-Find the ugen for the tablet via `usbconfig`, then
-create the appropriate devices with webcamd. Substitute the appropriate ugen for
-your system:
-```
-# webcamd -B -d ugen1.5
-```
-
-The tablet should now function properly.
 
 # How It Works
 
