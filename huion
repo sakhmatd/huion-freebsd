@@ -1,3 +1,5 @@
+#!/bin/sh
+
 #########################################################################
 # Copyright 2023 Sergei Akhmatdinov
 #
@@ -13,8 +15,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #########################################################################
-
-#!/bin/sh
 
 # PROVIDE: huion
 # REQUIRE: LOGIN
